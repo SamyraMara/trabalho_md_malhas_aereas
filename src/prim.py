@@ -14,20 +14,20 @@ um arquivo csv de cidades no seguinte formato:
 O arquivo deve estar na codificação utf-8 e salvo em formato .csv
 '''
 
-def pegar_peso(cidade_1, cidade_2):
+def pegar_peso(dicionario_pesos, cidade_1, cidade_2):
     '''
     Retorna o peso das arestas do dicionário `pesos`.
     Verifica as duas variações.
     '''
     try:
-        return pesos[cidade_1 + "_" + cidade_2]
+        return dicionario_pesos[cidade_1 + "_" + cidade_2]
     except:
         try:
-            return pesos[cidade_2 + "_" + cidade_1]
+            return dicionario_pesos[cidade_2 + "_" + cidade_1]
         except:
             return inf
 
-def prim(n, s):
+def prim(dict_pesos, dict_arestas, n, s):
     vertices_adicionados = []
     for i in range(n):
         vertices_adicionados.append(0)
@@ -40,7 +40,7 @@ def prim(n, s):
         for i in range(n):
             if vertices_adicionados[i] == 1:
                 for k in range(n):
-                    peso = pegar_peso(numero_para_nome[i+1], numero_para_nome[k+1])
+                    peso = pegar_peso(dict_pesos, dict_arestas[i+1], dict_arestas[k+1])
                     if (vertices_adicionados[k] == 0 and peso < menor_peso):
                         vertice_a_adicionar = k
                         aresta_a_adicionar = [i+1, k+1]
@@ -96,7 +96,7 @@ vert_inicial = nome_para_numero[primeira_aresta[0]]
 
 tamanho = len(nome_para_numero)
 
-arvore_em_numeros = prim(len(nome_para_numero), vert_inicial)
+arvore_em_numeros = prim(pesos, numero_para_nome, len(numero_para_nome), vert_inicial)
 
 arvore_em_nomes = []
 for aresta, peso in arvore_em_numeros:
